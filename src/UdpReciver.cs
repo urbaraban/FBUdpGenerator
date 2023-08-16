@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 
 namespace FBUdpGenerator
@@ -7,7 +8,7 @@ namespace FBUdpGenerator
     {
         public event EventHandler<byte[]> UdpRecived;
 
-        public bool IsReciving => ReciveTask.Status < TaskStatus.RanToCompletion;
+        public bool IsReciving => ReciveTask != null && ReciveTask.Status < TaskStatus.RanToCompletion;
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -18,27 +19,29 @@ namespace FBUdpGenerator
         public async void StartRecive(int port)
         {
             this.EndPoint = new IPEndPoint(IPAddress.Any, port);
-            this.UDPClient = new UdpClient(this.EndPoint);
+            this.UDPClient = new UdpClient(EndPoint);
             this.UDPClient.Client.ReceiveTimeout = 1000;
 
             CancellationToken cancellationToken = cts.Token;
-            try
+
+            var from = new IPEndPoint(IPAddress.Any, 0);
+            this.ReciveTask = Task.Run(() =>
             {
-                this.ReciveTask = Task.Run(() => 
-                { 
-                    while(cancellationToken.IsCancellationRequested ==  false)
+                while (cancellationToken.IsCancellationRequested == false)
+                {
+                    try
                     {
-                        byte[] bytes = this.UDPClient.Receive(ref this.EndPoint);
-                        UdpRecived?.Invoke(this, bytes);
+                        byte[] bytes = this.UDPClient.Receive(ref from);
+                        Debug.WriteLine($"incoming {bytes.Length}");
                     }
-                },
-                cancellationToken);
-               
-            }
-            catch (SocketException er)
-            {
-                Console.WriteLine(er);
-            }
+                    catch (SocketException er)
+                    {
+                        Console.WriteLine(er);
+                    }
+                }
+                this.UDPClient.Close();
+            },
+            cancellationToken);
         }
 
         public void StopRecive()
