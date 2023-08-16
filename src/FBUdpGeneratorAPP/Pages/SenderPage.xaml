@@ -1,0 +1,51 @@
+﻿<Page x:Class="FBUdpGeneratorAPP.Pages.SenderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodel="clr-namespace:FBUdpGeneratorAPP.ViewModel"
+      d:DataContext="{d:DesignInstance Type=viewmodel:Sender}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="300"
+      Title="SenderPage">
+    <Page.DataContext>
+        <viewmodel:Sender />
+    </Page.DataContext>
+    <DockPanel Margin="3">
+        <DockPanel DockPanel.Dock="Top">
+            <ComboBox d:Text="100Mbit"
+                      DockPanel.Dock="Right"
+                      SelectedItem="{Binding SelectTrafficLoad}"
+                      ItemsSource="{Binding TrafficLoadList}"/>
+            <TextBox d:Text="11000"
+                     Text="{Binding Port}"
+                     DockPanel.Dock="Right"/>
+
+            <TextBox d:Text="127.0.0.1"
+                     Text="{Binding Address}"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <TextBox d:Text="100"
+                     Text="{Binding DummySize}"
+                     VerticalContentAlignment="Center"
+                     Padding="5"/>
+            <Label Content="Kbit" />
+            <Button Content="Generate"
+                    Command="{Binding GenerateCommand}"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Right"
+                    Content="X"
+                    Command="{Binding StopSendCommand}"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+            <Button DockPanel.Dock="Left"
+                Content="Send"
+                Command="{Binding StartSendCommand}"/>
+        </DockPanel>
+
+
+        <ListBox DockPanel.Dock="Top"
+                 ItemsSource="{Binding Log}"/>
+
+    </DockPanel>
+</Page>

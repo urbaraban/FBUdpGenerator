@@ -29,8 +29,8 @@ namespace FPUdpGeneratorTest
             Assert.IsFalse(udpReciver.IsReciving);
         }
 
-        [Test]
-        public void TestSendToReciver()
+        [Test, Timeout(10000)]
+        public void TestSendOneMbitToReciver()
         {
             UdpReciver udpReciver = new UdpReciver();
             udpReciver.StartRecive(5011);
@@ -40,6 +40,42 @@ namespace FPUdpGeneratorTest
                 ShuffleGenerator.GetByteArray(1000),
                 new IPEndPoint(IPAddress.Loopback, 5011),
                 TrafficLoadMBits.OneMbit);
+
+
+            udpReciver.StopRecive();
+            Thread.Sleep(1100);
+            Assert.IsFalse(udpReciver.IsReciving);
+        }
+
+        [Test, Timeout(1600)]
+        public void TestSendHundredMBitToReciver()
+        {
+            UdpReciver udpReciver = new UdpReciver();
+            udpReciver.StartRecive(5011);
+
+            UdpSender udpSender = new UdpSender();
+            udpSender.Send(
+                ShuffleGenerator.GetByteArray(1000),
+                new IPEndPoint(IPAddress.Loopback, 5011),
+                TrafficLoadMBits.HundredMBit);
+
+
+            udpReciver.StopRecive();
+            Thread.Sleep(1100);
+            Assert.IsFalse(udpReciver.IsReciving);
+        }
+
+        [Test, Timeout(1200)]
+        public void TestSendOneGbitToReciver()
+        {
+            UdpReciver udpReciver = new UdpReciver();
+            udpReciver.StartRecive(5011);
+
+            UdpSender udpSender = new UdpSender();
+            udpSender.Send(
+                ShuffleGenerator.GetByteArray(1000),
+                new IPEndPoint(IPAddress.Loopback, 5011),
+                TrafficLoadMBits.OneGbit);
 
 
             udpReciver.StopRecive();

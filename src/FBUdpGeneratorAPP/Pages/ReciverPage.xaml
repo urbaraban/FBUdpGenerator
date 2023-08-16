@@ -1,0 +1,40 @@
+﻿<Page x:Class="FBUdpGeneratorAPP.Pages.ReciverPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodel="clr-namespace:FBUdpGeneratorAPP.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="300"
+      Title="ReciverPage">
+    <Page.DataContext>
+        <viewmodel:Reciver />
+    </Page.DataContext>
+    <DockPanel Margin="3">
+        <DockPanel DockPanel.Dock="Top">
+            <TextBox d:Text="11000"
+                     Text="{Binding Port}"
+                     DockPanel.Dock="Right"/>
+            <TextBox d:Text="00:1A:4B:5C:8D:9E"
+                     Text="{Binding Address}"
+                     DockPanel.Dock="Left"/>
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Bottom">
+            <Button DockPanel.Dock="Top"
+                    Content="Clear"
+                    Command="{Binding ClearCommand}"/>
+            <Button DockPanel.Dock="Right"
+                    Content="X"
+                    Command="{Binding StopReciveCommand}"
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+            <Button Content="Listen"
+                DockPanel.Dock="Bottom"
+                Command="{Binding StartReciveCommand}"/>
+        </DockPanel>
+
+        <ListBox DockPanel.Dock="Top"
+                 ItemsSource="{Binding Log}"/>
+    
+    </DockPanel>
+</Page>

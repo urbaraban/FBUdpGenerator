@@ -6,24 +6,37 @@ namespace FBUdpGenerator
 {
     public class UdpSender : UdpBase
     {
+        public bool IsSending => SendTask != null && SendTask.Status < TaskStatus.RanToCompletion;
+
+        private Task SendTask;
+
         public UdpSender() 
         {
             this.UDPClient = new UdpClient();
         }
-
 
         public void Send(byte[] session, IPEndPoint reciver, TrafficLoadMBits trafficLoad)
         {
             int bitsPerSecond = (int)trafficLoad * 125000;
             double millisecondbybit = 1000.0 / bitsPerSecond;
 
-            for (int j = 0; j < session.Length; j += 1500)
+            CancellationToken cancellationToken = cts.Token;
+
+            this.SendTask = Task.Run(() =>
             {
-                byte[] packet = session.Skip(j).Take(1500).ToArray();
-                int wait = (int)Math.Round(packet.Length * millisecondbybit);
-                SendBytes(packet, reciver);
-                Thread.Sleep(wait);
-            }
+                for (int j = 0; j < session.Length && cancellationToken.IsCancellationRequested == false; j += 1500)
+                {
+                    byte[] packet = session.Skip(j).Take(1500).ToArray();
+                    int wait = (int)Math.Round(packet.Length * millisecondbybit);
+                    SendBytes(packet, reciver);
+                    Thread.Sleep(wait);
+                }
+            }, cancellationToken);
+        }
+
+        public void Cancel()
+        {
+            this.cts.Cancel();
         }
 
         private void SendBytes(byte[] bytes, IPEndPoint reciver)

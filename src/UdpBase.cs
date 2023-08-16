@@ -7,5 +7,7 @@ namespace FBUdpGenerator
     {
         protected IPEndPoint EndPoint;
         protected UdpClient UDPClient;
+
+        protected CancellationTokenSource cts = new CancellationTokenSource();
     }
 }

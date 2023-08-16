@@ -10,13 +10,11 @@ namespace FBUdpGenerator
 
         public bool IsReciving => ReciveTask != null && ReciveTask.Status < TaskStatus.RanToCompletion;
 
-        private CancellationTokenSource cts = new CancellationTokenSource();
-
         private Task ReciveTask;
 
         public UdpReciver() { }
 
-        public async void StartRecive(int port)
+        public async void StartRecive(int port, string macfilter = "")
         {
             this.EndPoint = new IPEndPoint(IPAddress.Any, port);
             this.UDPClient = new UdpClient(EndPoint);
@@ -32,6 +30,7 @@ namespace FBUdpGenerator
                     try
                     {
                         byte[] bytes = this.UDPClient.Receive(ref from);
+                        UdpRecived?.Invoke(this, bytes);
                         Debug.WriteLine($"incoming {bytes.Length}");
                     }
                     catch (SocketException er)

@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{783CB62C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPUdpGeneratorTest", "tests\FPUdpGeneratorTest\FPUdpGeneratorTest.csproj", "{BA95CE7A-A5D9-4619-95DE-5DA7A4BFC7FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBUdpGeneratorAPP", "src\FBUdpGeneratorAPP\FBUdpGeneratorAPP.csproj", "{019413DD-E78D-4E17-98A8-3E483B1C30A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{BA95CE7A-A5D9-4619-95DE-5DA7A4BFC7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA95CE7A-A5D9-4619-95DE-5DA7A4BFC7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA95CE7A-A5D9-4619-95DE-5DA7A4BFC7FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{019413DD-E78D-4E17-98A8-3E483B1C30A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{019413DD-E78D-4E17-98A8-3E483B1C30A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{019413DD-E78D-4E17-98A8-3E483B1C30A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{019413DD-E78D-4E17-98A8-3E483B1C30A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B339AF44-D747-4362-9FAC-D9CFD53E104F} = {BAF993D3-43E6-4174-A1B2-F4392BE3C191}
 		{BA95CE7A-A5D9-4619-95DE-5DA7A4BFC7FC} = {783CB62C-236E-434A-8546-9A7B604AB91A}
+		{019413DD-E78D-4E17-98A8-3E483B1C30A8} = {BAF993D3-43E6-4174-A1B2-F4392BE3C191}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {684C7C47-C079-486B-BA3E-CEC287CB2326}
