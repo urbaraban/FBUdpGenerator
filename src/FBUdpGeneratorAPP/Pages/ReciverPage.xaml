@@ -36,12 +36,20 @@
         </DockPanel>
 
         <DockPanel DockPanel.Dock="Top">
-            <TextBlock>
+            <TextBlock DockPanel.Dock="Top">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="Accept Bytes: {0} PacketCommon: {1} Denied: {2}">
                         <Binding Path="BytesCount" />
                         <Binding Path="PacketsCommonCount" />
                         <Binding Path="PacketsLossCount" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock DockPanel.Dock="Bottom">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="Reciving: {0} Filter: {1}">
+                        <Binding Path="IsReciving" />
+                        <Binding Path="Address" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

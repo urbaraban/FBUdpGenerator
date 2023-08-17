@@ -20,6 +20,7 @@ namespace FBUdpGeneratorAPP.ViewModel
             set
             {
                 buffersize = value;
+                OnPropertyChanged(nameof(ReciverBufferSize));
             }
         }
         private int buffersize = 8192;
@@ -72,7 +73,7 @@ namespace FBUdpGeneratorAPP.ViewModel
             {
                 try
                 {
-                    Log.Add($"Слушатель запущен на {Address}:{Port}");
+                    Log.Add($"Слушатель запущен на {Address}:{Port}:{ReciverBufferSize} bytes");
                     this.UdpReciver.StartRecive(this.Port, buffersize);
                 }
                 catch
@@ -88,6 +89,7 @@ namespace FBUdpGeneratorAPP.ViewModel
             {
                 Log.Add($"Слушатель уже запущен");
             }
+            OnPropertyChanged(nameof(IsReciving));
         });
 
         public ICommand StopReciveCommand => new ActionCommand(() =>
@@ -95,7 +97,7 @@ namespace FBUdpGeneratorAPP.ViewModel
             this.UdpReciver.StopRecive();
             this.UdpReciver.UdpRecived -= UdpReciver_UdpRecived;
             this.Log.Add($"Слушатель остановлен");
-            
+            OnPropertyChanged(nameof(IsReciving));
         });
 
         public ICommand ClearCommand => new ActionCommand(() =>
