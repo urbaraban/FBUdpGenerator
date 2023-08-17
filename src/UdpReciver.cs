@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
 
 namespace FBUdpGenerator
 {
     public class UdpReciver : UdpBase
     {
-        public event EventHandler<byte[]> UdpRecived;
+        public event EventHandler<(string, byte[])> UdpRecived;
 
         public bool IsReciving => ReciveTask != null && ReciveTask.Status < TaskStatus.RanToCompletion;
 
@@ -14,11 +13,11 @@ namespace FBUdpGenerator
 
         public UdpReciver() { }
 
-        public async void StartRecive(int port, string macfilter = "")
+        public void StartRecive(int port, int buffersize = 8192)
         {
             this.EndPoint = new IPEndPoint(IPAddress.Any, port);
             this.UDPClient = new UdpClient(EndPoint);
-            this.UDPClient.Client.ReceiveTimeout = 1000;
+            this.UDPClient.Client.ReceiveBufferSize = buffersize;
 
             CancellationToken cancellationToken = cts.Token;
 
@@ -27,18 +26,11 @@ namespace FBUdpGenerator
             {
                 while (cancellationToken.IsCancellationRequested == false)
                 {
-                    try
-                    {
-                        byte[] bytes = this.UDPClient.Receive(ref from);
-                        UdpRecived?.Invoke(this, bytes);
-                        Debug.WriteLine($"incoming {bytes.Length}");
-                    }
-                    catch (SocketException er)
-                    {
-                        Console.WriteLine(er);
-                    }
+                    byte[] bytes = this.UDPClient.Receive(ref from);
+                    UdpRecived?.Invoke(this, (from.Address.ToString(), bytes));
                 }
                 this.UDPClient.Close();
+                
             },
             cancellationToken);
         }
@@ -46,6 +38,13 @@ namespace FBUdpGenerator
         public void StopRecive()
         {
             cts.Cancel();
+            Thread.Sleep(300);
+            if (this.UDPClient != null)
+            {
+                this.UDPClient.Close();
+                this.UDPClient.Dispose();
+            }
+            cts = new CancellationTokenSource();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 namespace FBUdpGenerator
 {
     public class UdpSender : UdpBase
-    {
+    { 
         public bool IsSending => SendTask != null && SendTask.Status < TaskStatus.RanToCompletion;
 
         private Task SendTask;
@@ -15,10 +15,17 @@ namespace FBUdpGenerator
             this.UDPClient = new UdpClient();
         }
 
+        /// <summary>
+        /// Sending byte array to reciver
+        /// </summary>
+        /// <param name="session">byte for sending</param>
+        /// <param name="reciver"></param>
+        /// <param name="trafficLoad">uploading speed</param>
+        /// <returns></returns>
         public void Send(byte[] session, IPEndPoint reciver, TrafficLoadMBits trafficLoad)
         {
-            int bitsPerSecond = (int)trafficLoad * 125000;
-            double millisecondbybit = 1000.0 / bitsPerSecond;
+            int bytePerSecond = (int)trafficLoad * 125000;
+            double microsecondbyte = 1000000.0 / bytePerSecond;
 
             CancellationToken cancellationToken = cts.Token;
 
@@ -27,9 +34,9 @@ namespace FBUdpGenerator
                 for (int j = 0; j < session.Length && cancellationToken.IsCancellationRequested == false; j += 1500)
                 {
                     byte[] packet = session.Skip(j).Take(1500).ToArray();
-                    int wait = (int)Math.Round(packet.Length * millisecondbybit);
+                    long wait = (long)Math.Round(packet.Length * microsecondbyte);
                     SendBytes(packet, reciver);
-                    Thread.Sleep(wait);
+                    udelay(wait);
                 }
             }, cancellationToken);
         }
@@ -45,6 +52,13 @@ namespace FBUdpGenerator
             {
                 this.UDPClient.Send(bytes, bytes.Length, reciver);
             }
+        }
+
+        private static void udelay(long us)
+        {
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            long v = (us * System.Diagnostics.Stopwatch.Frequency) / 1000000;
+            while (sw.ElapsedTicks < v) ; ;
         }
     }
 

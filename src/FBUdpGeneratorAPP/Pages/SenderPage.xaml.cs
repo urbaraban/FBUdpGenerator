@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using FBUdpGeneratorAPP.Services;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FBUdpGeneratorAPP.Pages
 {
@@ -23,6 +11,34 @@ namespace FBUdpGeneratorAPP.Pages
         public SenderPage()
         {
             InitializeComponent();
+        }
+
+        private void TextBox_PreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            e.Handled = InputValidator.IsNumeric(e.Text);
+        }
+
+        private void TextBox_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            if (sender is TextBox box && box.Text.Length > 0)
+            {
+                int value = int.Parse(box.Text);
+                if (value == 0)
+                {
+                    value = 1024;
+                }
+
+                if (e.Delta > 0)
+                {
+                    value *= 10;
+                }
+                else
+                {
+                    value /= 10;
+                }
+
+                box.Text = value.ToString();
+            }
         }
     }
 }

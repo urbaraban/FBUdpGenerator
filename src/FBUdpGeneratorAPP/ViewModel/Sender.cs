@@ -12,7 +12,6 @@ namespace FBUdpGeneratorAPP.ViewModel
     {
         public string Address { get; set; } = "127.0.0.1";
         public int Port { get; set; } = 11000;
-
         public int DummySize { get; set; } = 100;
 
         public byte[] Dummy 
@@ -34,7 +33,6 @@ namespace FBUdpGeneratorAPP.ViewModel
             TrafficLoadMBits.HundredMBit,
             TrafficLoadMBits.OneGbit
         };
-
         public TrafficLoadMBits SelectTrafficLoad { get; set; } = TrafficLoadMBits.OneMbit;
 
         private UdpSender udpSender;
@@ -46,6 +44,7 @@ namespace FBUdpGeneratorAPP.ViewModel
                 this.udpSender = new UdpSender();
                 var endpoint = new IPEndPoint(IPAddress.Parse(Address), Port);
                 this.udpSender.Send(this.Dummy, endpoint, SelectTrafficLoad);
+                this.Log.Add($"Отправили {this.Dummy.Length} байт на {Address}");
             }
             catch
             {
@@ -57,7 +56,7 @@ namespace FBUdpGeneratorAPP.ViewModel
         public ICommand GenerateCommand => new ActionCommand(() =>
         {
             this.Dummy = ShuffleGenerator.GetByteArray(DummySize);
-            Log.Add($"Размер сгенерированного пакета {this.Dummy.Length}");
+            Log.Add($"Размер сгенерированного пакета {this.Dummy.Length * 8} бит");
         });
 
         public ICommand StopSendCommand => new ActionCommand(() =>

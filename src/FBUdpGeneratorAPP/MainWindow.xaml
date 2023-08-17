@@ -8,13 +8,8 @@
         FontSize="16">
     <Window.Resources>
         <ResourceDictionary>
-            <Style TargetType="{x:Type GridSplitter}">
-                <Setter Property="Background" Value="White" />
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="CadetBlue" />
-                    </Trigger>
-                </Style.Triggers>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="VerticalContentAlignment" Value="Center" />
             </Style>
         </ResourceDictionary>
     </Window.Resources>

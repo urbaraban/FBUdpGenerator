@@ -14,10 +14,37 @@
         <DockPanel DockPanel.Dock="Top">
             <TextBox d:Text="11000"
                      Text="{Binding Port}"
-                     DockPanel.Dock="Right"/>
-            <TextBox d:Text="00:1A:4B:5C:8D:9E"
+                     DockPanel.Dock="Right"
+                     PreviewTextInput="TextBox_PreviewTextInput"/>
+            <Label Content="Port"
+                   DockPanel.Dock="Right"/>
+            <Label Content="Filter" 
+                   DockPanel.Dock="Left"/>
+            <TextBox d:Text="127.0.0.1"
                      Text="{Binding Address}"
-                     DockPanel.Dock="Left"/>
+                     />
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Top">
+            <Label Content="Buffer" />
+            <TextBox d:Text="8192"
+                     ToolTip="Колесиком x2"
+                     Text="{Binding ReciverBufferSize}"
+                     DockPanel.Dock="Right"
+                     PreviewTextInput="TextBox_PreviewTextInput"
+                     MouseWheel="TextBox_MouseWheel"/>
+        </DockPanel>
+
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="Accept Bytes: {0} PacketCommon: {1} Denied: {2}">
+                        <Binding Path="BytesCount" />
+                        <Binding Path="PacketsCommonCount" />
+                        <Binding Path="PacketsLossCount" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </DockPanel>
 
         <DockPanel DockPanel.Dock="Bottom">

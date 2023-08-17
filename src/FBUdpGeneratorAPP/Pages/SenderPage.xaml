@@ -19,16 +19,20 @@
                       ItemsSource="{Binding TrafficLoadList}"/>
             <TextBox d:Text="11000"
                      Text="{Binding Port}"
-                     DockPanel.Dock="Right"/>
+                     DockPanel.Dock="Right"
+                     PreviewTextInput="TextBox_PreviewTextInput"/>
 
             <TextBox d:Text="127.0.0.1"
                      Text="{Binding Address}"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <TextBox d:Text="100"
+                     ToolTip="Колесиком х10"
                      Text="{Binding DummySize}"
                      VerticalContentAlignment="Center"
-                     Padding="5"/>
+                     Padding="5"
+                     PreviewTextInput="TextBox_PreviewTextInput"
+                     MouseWheel="TextBox_MouseWheel"/>
             <Label Content="Kbit" />
             <Button Content="Generate"
                     Command="{Binding GenerateCommand}"/>
